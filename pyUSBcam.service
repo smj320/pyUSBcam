@@ -1,0 +1,13 @@
+[Unit]
+Description=pyUSBcam
+After=syslog.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/admin/proj/pyUSBcam
+ExecStart=sh usbcamd.sh
+TimeoutStopSec=5
+StandardOutput=null
+
+[Install]
+WantedBy = multi-user.target

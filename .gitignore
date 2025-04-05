@@ -1,0 +1,10 @@
+.idea/
+.venv/
+/img_s/*
+!/img_s/.gitkeep
+/img_l/*
+!/img_l/.gitkeep
+/cam/*
+!/cam/.gitkeep
+!/cam/df3_logo.jpg
+config.ini

@@ -1,0 +1,8 @@
+[PORT]
+# TX=/dev/cu.usbserial-A5017AXP
+TX=/dev/serial0
+RX=/dev/cu.usbserial-AI055V7I
+BPS=38400
+
+[WINDOW]
+NAME=Dome Fuji III Camera System
