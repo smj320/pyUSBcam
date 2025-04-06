@@ -2,7 +2,7 @@
 
 ## PCの設定
 
-```angular2html
+```bash
 % git clone git@github.com:smj320/pyUSBcam.git
 % pyenv local 3.11.2
 % python --version
@@ -22,11 +22,6 @@ Python 3.11.2
 * sshを効くようにして、admin/domef3 でログインできるようにする。
 * SSID は2.4Gのものを指定する。SDから編集できるのだろうか？
 * 重いので、raspi-configでGUIログインを停める。
-* 初期化でを使う場合は、固定IPはcmdline.txtに下記を追記
-```angular2html
-ip=192.168.0.5::192.168.1.50:255.255.255.0:rpi:eth0:off
-```
-
 * 周辺機器のシリアルポートを有効にして、ログインには使わないように設定->再起動になる
 * sudo apt-get install lsusb
 * sudo apt-get install fswebcam
@@ -39,10 +34,10 @@ ip=192.168.0.5::192.168.1.50:255.255.255.0:rpi:eth0:off
 * ssh git@github.comで接続確認
 * /home/admin/proj で　git clone git@github.com:smj320/pyUSBcam.git
 * pyUSBcamに移動
-* /etc/fstabに下記を追加
-* /dev/shm  /home/admin/proj/pyUSBcam/img_s   tmpfs   defaults, size=4m  0 0
+* /etc/fstabに下記を追加してリブート
+* tmpfs /home/admin/proj/pyUSBcam/img_s tmpfs defaults,size=4m 0 0
 * 
-```angular2html
+```bash
 % cp config.ini.dist config.ini
 % pip install configurator
 % sh pyUSBcam.sh で様子を見る。出力されていたら
@@ -53,7 +48,7 @@ ip=192.168.0.5::192.168.1.50:255.255.255.0:rpi:eth0:off
 サービス登録用クリプト
 webcam.service
 これを下記のように登録して実行、テストする。
-```angular2html
+```bash
 $ sudo cp webcam.service /etc/systemd/system/
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable pyUSBcam

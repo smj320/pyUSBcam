@@ -24,11 +24,11 @@ size_arr = size.to_bytes(4, byteorder='big')
 # ヘッダ出力
 for fs in fsw_arr:
     writeSer.write(fs.to_bytes(1))
-    print(format(fs,"X"), flush=True)
+    # print(format(fs,"X"), flush=True)
 # サイズ出力
 for s in size_arr:
     writeSer.write(s.to_bytes(1))
-    print(format(s,"X"), flush=True)
+    # print(format(s,"X"), flush=True)
 # 実体出力
 cnt = 0
 for b in b_arr:
