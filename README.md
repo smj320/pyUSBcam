@@ -1,49 +1,49 @@
 # 環境設定とか
 
+## PCの設定
+
+```angular2html
+% git clone git@github.com:smj320/pyUSBcam.git
+% pyenv local 3.11.2
+% python --version
+Python 3.11.2
+% python3 -m venv .venv
+% . .venv/bin/activate
+% pip install pyserial
+% pip install opencv-python
+% cp config.ini.dist config.ini
+
+```
+
 ## Raspy側の設定
 
 ### OSのインストール
 * sshを効くようにして、admin/domef3 でログインできるようにする。
 * SSID は2.4Gのものを指定する。SDから編集できるのだろうか？
-* DHCP-DNSの組み合わせによっては
-ssh admin@df3cma01.local
-で呼び出せることもある。見つからなければ
-nmap -p 22 192.168.1.0/24　で探す
-hostがかぶっていると言われたら
-ssh-keygen -R 192.168.1.xx
-
-### 行う設定
 * 重いので、raspi-configでGUIログインを停める。
-* 周辺機器のシリアルポートを有効にして、ログインには使わないように設定。
-
-### パスとか
-ホスト名はdf3cma01とか
-プロジェクトルートパスは/usr/admin/proj/pyUSBcam
-コマンドとかもここにおく。
-
-mkdir -p /home/admin/proj/pyC/img_l
-mkdir -p /home/admin/proj/pyUSBcam/img_s
-mkdir -p /home/admin/proj/pyUSBcam/log
-/home/admin/proj/pyUSBcam/img_s/current.jpg を送信する。
+* 固定IPはcmdline.txtに下記を追記
+```angular2html
+ip=192.168.0.5::192.168.1.50:255.255.255.0:rpi:eth0:off
+```
+ssh-keygen -R 192.168.1.xx
+* 周辺機器のシリアルポートを有効にして、ログインには使わないように設定->再起動になる
+* sudo apt-get install lsusb
+* sudo apt-get install fswebcam
 
 
-### 必要なもの
-touch encode.py
-touch config.ini
-touch exec.sh
-vi でコピペが確実。上で述べた作業ディレクトリ2つは作っておく。
-
-sudo apt-get install lsusb カメラを確認
-sudo apt-get install fswebcam　出力を確認
-sudo apt-get install pipenv
-
-raspiの場合はpyserialは最初から入っているので入れない。
-daemon化したときにパスが解らなくなる
+### pyUSBのインストール
+* sudo apt-get install git
+* mkdir ~/.ssh & chmod 700 ~/.ssh
+* id_rsa_githubをid_rsaとしてコピーして、600
+* ssh git@github.comで接続確認
+* /home/admin/proj で　git clone git@github.com:smj320/pyUSBcam.git
+* pyUSBcamに移動
+```angular2html
+% cp config.ini.dist config.ini
+% sh pyUSBcam.sh で様子を見る
+```
 
 ### exec.shとwebcamd.sh
-
-exec.shはfswebcamで画像をとって、encode.pyでシステムに送る。
-webcamd.shはdaemon用のスクリプトで、出力を./log/webcam.logに 集める。
 
 デーモンス起動クリプト
 webcam.service
@@ -52,9 +52,9 @@ webcam.service
 ```angular2html
 $ sudo cp webcam.service /etc/systemd/system/
 $ sudo systemctl daemon-reload
-$ sudo systemctl enable webcam
+$ sudo systemctl enable pyUSBcam
 テストは
-$ sudo systemctl start/stop webcam
+$ sudo systemctl start/stop pyUSBcam
 ```
 
 /etc/systemd/system/webcam.serviceを変更したときにはreloadする。
