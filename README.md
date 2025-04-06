@@ -35,7 +35,7 @@ Python 3.11.2
 * /home/admin/proj で　git clone git@github.com:smj320/pyUSBcam.git
 * pyUSBcamに移動
 * /etc/fstabに下記を追加してリブート
-* tmpfs /home/admin/proj/pyUSBcam/img_s tmpfs defaults,size=4m 0 0
+* tmpfs /home/admin/proj/pyUSBcam/img_s tmpfs defaults,size=4m,mode=0777 0 0
 * 
 ```bash
 % cp config.ini.dist config.ini
