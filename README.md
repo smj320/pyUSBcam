@@ -11,9 +11,10 @@ Python 3.11.2
 % . .venv/bin/activate
 % pip install pyserial
 % pip install opencv-python
+% pip install configurator
 % cp config.ini.dist config.ini
-
 ```
+接続で蹴られたら　ssh-keygen -R 192.168.1.xx
 
 ## Raspy側の設定
 
@@ -21,11 +22,11 @@ Python 3.11.2
 * sshを効くようにして、admin/domef3 でログインできるようにする。
 * SSID は2.4Gのものを指定する。SDから編集できるのだろうか？
 * 重いので、raspi-configでGUIログインを停める。
-* 固定IPはcmdline.txtに下記を追記
+* 初期化でを使う場合は、固定IPはcmdline.txtに下記を追記
 ```angular2html
 ip=192.168.0.5::192.168.1.50:255.255.255.0:rpi:eth0:off
 ```
-ssh-keygen -R 192.168.1.xx
+
 * 周辺機器のシリアルポートを有効にして、ログインには使わないように設定->再起動になる
 * sudo apt-get install lsusb
 * sudo apt-get install fswebcam
@@ -40,21 +41,21 @@ ssh-keygen -R 192.168.1.xx
 * pyUSBcamに移動
 ```angular2html
 % cp config.ini.dist config.ini
-% sh pyUSBcam.sh で様子を見る
+% pip install configurator
+% sh pyUSBcam.sh で様子を見る。出力されていたら
+% sh pyUSBcamd.sh で起動して,tail -f ./log/pyUSBcam.log で起動を確認
 ```
 
-### exec.shとwebcamd.sh
-
-デーモンス起動クリプト
+### 自動起動
+サービス登録用クリプト
 webcam.service
-これを下記に配置する。
-
+これを下記のように登録して実行、テストする。
 ```angular2html
 $ sudo cp webcam.service /etc/systemd/system/
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable pyUSBcam
 テストは
-$ sudo systemctl start/stop pyUSBcam
+$ sudo systemctl start/stop pyUSBcam　で./log/pyUSBcam.logを確認
 ```
 
 /etc/systemd/system/webcam.serviceを変更したときにはreloadする。
