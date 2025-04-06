@@ -39,6 +39,9 @@ ip=192.168.0.5::192.168.1.50:255.255.255.0:rpi:eth0:off
 * ssh git@github.comで接続確認
 * /home/admin/proj で　git clone git@github.com:smj320/pyUSBcam.git
 * pyUSBcamに移動
+* /etc/fstabに下記を追加
+* /dev/shm  /home/admin/proj/pyUSBcam/img_s   tmpfs   defaults, size=4m  0 0
+* 
 ```angular2html
 % cp config.ini.dist config.ini
 % pip install configurator
