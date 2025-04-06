@@ -4,6 +4,8 @@
 !/img_s/.gitkeep
 /img_l/*
 !/img_l/.gitkeep
+/log/*
+!/log/.gitkeep
 /cam/*
 !/cam/.gitkeep
 !/cam/df3_logo.jpg
