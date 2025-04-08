@@ -20,13 +20,13 @@ fps = 10.0
 q_low_period = 10
 q_low_w = 320
 q_low_h = 240
-q_high_period = q_low_period * 4
+q_high_period = q_low_period * 2
 q_high_w = q_low_w * 2
 q_high_h = q_low_h * 2
 
 # GPIO
-# is_low = True
-is_low = False
+# q_low = True
+q_low = False
 
 """
 UART 送信スレッド
@@ -92,10 +92,12 @@ def main():
         # 1フレームずつ取得する。
         ret, frame = cap.read()
         video.write(frame)
+        cv2.imshow("frame", frame)
+        cv2.waitKey(1)
         # 画質選択
-        period = q_low_period if is_low else q_high_period
-        img_w = q_low_w if is_low else q_high_w
-        img_h = q_low_h if is_low else q_high_h
+        period = q_low_period if q_low else q_high_period
+        img_w = q_low_w if q_low else q_high_w
+        img_h = q_low_h if q_low else q_high_h
         if n_flame == fps * period:
             print("Output Cache", flush=True)
             tx_img = cv2.resize(frame, (img_w, img_h))
