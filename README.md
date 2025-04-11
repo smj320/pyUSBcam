@@ -59,3 +59,23 @@ $ sudo systemctl start/stop pyUSBcam　で./log/pyUSBcam.logを確認
 
 /etc/systemd/system/webcam.serviceを変更したときにはreloadする。
 
+## 固定IPの振り方
+固定IPの振り方
+一回DHCPでWifiに繋ぎ、その後固定に変更する。
+
+シリアルからの接続を確認するために、以下のコマンドを実行
+
+
+```angular2html
+nmcli connection
+[結果]
+NAME           UUID                                  TYPE      DEVICE 
+preconfigured  fe2889e5-fa03-4766-b312-0abb62ae1e25  wifi      wlan0
+[設定]
+sudo nmcli con mod "SSIDから付けられているID" ipv4.method "manual" ipv4.addresses "192.168.1.39/24" ipv4.gateway "192.168.1.1" 
+sudo nmcli connection up SSIDから付けられているID
+[反映]
+sudo nmcli connection reload
+sudo nmcli connection up SSIDから付けられているID
+```
+
