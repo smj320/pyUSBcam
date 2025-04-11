@@ -40,6 +40,7 @@ Python 3.11.2
 ```bash
 % cp config.ini.dist config.ini
 % pip install configurator
+% sudo apt-get install libopencv-dev python3-opencv #pipだと失敗する
 % sh pyUSBcam.sh で様子を見る。出力されていたら
 % sh pyUSBcamd.sh で起動して,tail -f ./log/pyUSBcam.log で起動を確認
 ```
