@@ -76,22 +76,22 @@ def main():
     cap = cv2.VideoCapture(0)
 
     # 動画保存時の形式を設定
-    # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    fourcc = cv2.VideoWriter.fourcc(*'mp4v')
     name = "./mp4/sample.mp4"
 
     # カメラの幅を取得
-    # w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     # カメラの高さを取得
-    # h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     # (保存名前、fourcc,fps,サイズ)
-    # video = cv2.VideoWriter(name, fourcc, fps, (w, h))
+    video = cv2.VideoWriter(name, fourcc, fps, (w, h))
 
     n_flame = 0
     while True:
         # 1フレームずつ取得する。
-        # ret, frame = cap.read()
-        # video.write(frame)
+        ret, frame = cap.read()
+        video.write(frame)
         # cv2.imshow("frame", frame)
         # cv2.waitKey(1)
         sleep

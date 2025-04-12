@@ -79,3 +79,93 @@ sudo nmcli connection reload
 sudo nmcli connection up SSIDから付けられているID
 ```
 
+または
+```angular2html
+sudo nmcli connection up preconfigured
+[connection]
+id=preconfigured
+uuid=fe2889e5-fa03-4766-b312-0abb62ae1e25
+type=wifi
+timestamp=1744387820
+
+[wifi]
+mode=infrastructure
+ssid=AM24
+
+[wifi-security]
+key-mgmt=wpa-psk
+psk=67Sumikiku
+
+[ipv4]
+address1=192.168.1.100/24,192.168.1.1
+dns=8.8.8.8;
+method=manual
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+
+[proxy]
+```
+を修正する。修正後
+```angular2html
+$ sudo nmcli connection reload
+$ sudo nmcli connection up preconfigured
+```
+nslokupとかは
+```angular2html
+$ sudo apt-get install dnsutils
+```
+
+## カメラパラメータの確認
+```
+admin@df3cam01:~ $ v4l2-ctl --list-formats-ext
+ioctl: VIDIOC_ENUM_FMT
+	Type: Video Capture
+	[0]: 'MJPG' (Motion-JPEG, compressed)
+		Size: Discrete 1920x1080
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 1280x720
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 960x540
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 848x480
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 640x480
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 640x360
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 424x240
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 320x240
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 320x180
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 176x144
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 160x120
+			Interval: Discrete 0.033s (30.000 fps)
+	[1]: 'YUYV' (YUYV 4:2:2)
+		Size: Discrete 1920x1080
+			Interval: Discrete 0.200s (5.000 fps)
+		Size: Discrete 1280x720
+			Interval: Discrete 0.100s (10.000 fps)
+		Size: Discrete 960x540
+			Interval: Discrete 0.050s (20.000 fps)
+		Size: Discrete 848x480
+			Interval: Discrete 0.050s (20.000 fps)
+		Size: Discrete 640x480
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 640x360
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 424x240
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 320x240
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 320x180
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 176x144
+			Interval: Discrete 0.033s (30.000 fps)
+		Size: Discrete 160x120
+			Interval: Discrete 0.033s (30.000 fps)
+```
