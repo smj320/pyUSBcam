@@ -1,10 +1,22 @@
 # 解説1
 import cv2
+import datetime
+
+
+def path_name(ext):
+    # 時刻の準備
+    t_delta = datetime.timedelta(hours=9)
+    JST = datetime.timezone(t_delta, 'JST')
+    # ファイル名生成
+    now = datetime.datetime.now(JST)
+    d = now.strftime('%Y-%m-%d_%H:%M:%S')
+    fn = "%s.%s" % (d, ext)
+    return fn
 
 
 def main():
     src = 'v4l2src device=/dev/video0 ! image/jpeg, '
-    src += 'width=1280, height=720, '
+    src += 'width=640, height=480, '
     src += 'framerate=(fraction)30/1 !jpegdec !videoconvert ! appsink'
     tt = 30
     # UVCカメラを開く
@@ -15,14 +27,17 @@ def main():
     print(fps, ww, hh)
 
     fourcc = cv2.VideoWriter.fourcc(*'mjpg')  # 動画のコーデックを指定
-    video = cv2.VideoWriter("./video/movie.avi", fourcc, fps, (int(ww/4), int(hh/4)))
+    path = "./movie/%s" % path_name("avi")
+    print(path)
+    video = cv2.VideoWriter(path, fourcc, fps, (int(ww), int(hh)))
 
     for i in range(0, int(fps) * tt):
         ret, frame = cap.read()
-        mini = cv2.resize(frame, (int(ww/4), int(hh/4)))
-        video.write(mini)
-        if i % 10 == 0:
-            cv2.imwrite('./image/%06d.jpg' % i, frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
+        video.write(frame)
+        if i % int(fps) == 0:
+            path = './image/%s' % path_name("jpg")
+            print(path)
+            cv2.imwrite(path, frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
         print(i)
 
     cap.release()

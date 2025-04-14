@@ -70,7 +70,7 @@ def serial_tx():
 """
 def main():
     src = 'v4l2src device=/dev/video0 ! image/jpeg, '
-    src += 'width=640, height=480, '
+    src += 'width=1280, height=720, '
     src += 'framerate=(fraction)30/1 !jpegdec !videoconvert ! appsink'
 
     thread = Thread(target=serial_tx)
@@ -80,8 +80,8 @@ def main():
     cap = cv2.VideoCapture(src)
 
     # 動画保存時の形式を設定
-    fourcc = cv2.VideoWriter.fourcc(*'mp4v')
-    name = "./mp4/sample.mp4"
+    fourcc = cv2.VideoWriter.fourcc(*'mjpg')
+    name = "./movie/sample.avi"
 
     # カメラの幅を取得
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
