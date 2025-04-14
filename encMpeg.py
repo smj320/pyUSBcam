@@ -69,11 +69,15 @@ def serial_tx():
 メインスレッド
 """
 def main():
+    src = 'v4l2src device=/dev/video0 ! image/jpeg, '
+    src += 'width=640, height=480, '
+    src += 'framerate=(fraction)30/1 !jpegdec !videoconvert ! appsink'
+
     thread = Thread(target=serial_tx)
     thread.start()
 
     # USBカメラの場合は1、パソコン内蔵カメラの場合は0
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(src)
 
     # 動画保存時の形式を設定
     fourcc = cv2.VideoWriter.fourcc(*'mp4v')
@@ -93,8 +97,6 @@ def main():
         ret, frame = cap.read()
         video.write(frame)
         # cv2.imshow("frame", frame)
-        # cv2.waitKey(1)
-        sleep
         # 画質選択
         period = q_low_period if q_low else q_high_period
         img_w = q_low_w if q_low else q_high_w
