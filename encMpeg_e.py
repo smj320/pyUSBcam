@@ -20,6 +20,8 @@ def tx_data():
     while True:
         print("wait")
         frame = queue.get()
+        if frame is None:
+            break
         path = './image/%s' % path_name("jpg")
         print(path)
         cv2.imwrite(path, frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
@@ -30,8 +32,8 @@ def main():
     thread = Thread(target=tx_data)
     thread.start()
 
-    src = 'v4l2src device=/dev/video0 ! image/jpeg, '
-    src += 'width=1920, height=1080, '
+    src = 'v4l2src device=/dev/video0 ! image/jpeg,'
+    src += 'width=1920, height=1080,'
     src += 'framerate=(fraction)30/1 !jpegdec !videoconvert ! appsink'
     tt = 30
     # UVCカメラを開く
@@ -41,7 +43,7 @@ def main():
     hh = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
     print(fps, ww, hh)
 
-    fourcc = cv2.VideoWriter.fourcc(*'FMP4')  # 動画のコーデックを指定
+    fourcc = cv2.VideoWriter.fourcc(*'MJPG')  # 動画のコーデックを指定
     path = "./movie/%s" % path_name("avi")
     print(path)
     video = cv2.VideoWriter(path, fourcc, fps, (int(ww), int(hh)))
@@ -53,6 +55,7 @@ def main():
         if i % 10 == 0:
             queue.put(frame)
 
+    queue.put(None)
     cap.release()
     video.release()
     thread.join()
