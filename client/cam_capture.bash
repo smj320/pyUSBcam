@@ -7,4 +7,9 @@ cd ${PROJECT_ROOT}/client
 find img -name '*.jpg' -delete  &> ${LOG}
 find sent -name '*.jpg' -delete  &>> ${LOG}
 . ../.venv/bin/activate
-python3 capture.py &>> ${LOG}
+
+if [ "$1" == "-v" ]; then
+  python3 capture.py
+else
+  python3 capture.py &>> ${LOG}
+fi

@@ -5,4 +5,9 @@ LOG=${PROJECT_ROOT}/log/${TS}-encoder.log
 # shellcheck disable=SC2164
 cd ${PROJECT_ROOT}/client
 . ../.venv/bin/activate
-python3 encoder.py &> ${LOG}
+if [ "$1" == "-v" ]; then
+  python3 encoder.py
+else
+  python3 encoder.py &> ${LOG}
+fi
+

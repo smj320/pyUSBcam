@@ -5,7 +5,7 @@ After=cam_capture.target
 [Service]
 Type=simple
 WorkingDirectory=/home/admin/pyUSBcam
-ExecStart=bash cam_encoder.sh
+ExecStart=bash cam_encoder.bash
 TimeoutStopSec=5
 StandardOutput=null
 
