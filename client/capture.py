@@ -21,6 +21,7 @@ def task(arg1, args2):
     if cv2.waitKey(1) & 0xFF == ord('q'):
         exit(0)
 
+
 def main():
     global cap
     global idx
@@ -36,10 +37,11 @@ def main():
 
     idx = 0
     signal.signal(signal.SIGALRM, task)
-    signal.setitimer(signal.ITIMER_REAL, 1, 1)
+    signal.setitimer(signal.ITIMER_REAL, 1, 0.2)
 
     while True:
         time.sleep(1000)
+
 
 if __name__ == "__main__":
     main()
