@@ -1,11 +1,11 @@
 [Unit]
-Description=pyUSBcam
+Description=cam_capture
 After=syslog.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/admin/proj/pyUSBcam
-ExecStart=sh pyUSBcamd.sh
+WorkingDirectory=/home/admin/pyUSBcam
+ExecStart=bash cam_capture.sh
 TimeoutStopSec=5
 StandardOutput=null
 

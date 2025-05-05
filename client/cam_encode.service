@@ -1,0 +1,13 @@
+[Unit]
+Description=cam_encode
+After=cam_capture.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/admin/pyUSBcam
+ExecStart=bash cam_encode.sh
+TimeoutStopSec=5
+StandardOutput=null
+
+[Install]
+WantedBy = multi-user.target
