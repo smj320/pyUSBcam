@@ -16,7 +16,7 @@ def path_name(ext):
     # ファイル名生成
     now = datetime.datetime.now(JST)
     d = now.strftime('%Y-%m-%d_%H:%M:%S')
-    fn = "./img_s/%s.%s" % (d, ext)
+    fn = "./sent/%s.%s" % (d, ext)
     return fn
 
 
@@ -27,16 +27,16 @@ def main():
 
     # 設定ファイル読み込みとポートのオープン
     config = configparser.ConfigParser()
-    config.read("config.ini")
-    PORT_RX = config["PORT"]["RX"]
-    BPS = int(config["PORT"]["BPS"])
+    config.read("../config.ini")
+    PORT_RX = config["GSE"]["SERIAL_RX"]
+    BPS = int(config["COMMON"]["BPS"])
 
     # ロゴ画面
-    window_name = config["WINDOW"]["NAME"]
+    window_name = config["GSE"]["NAME"]
     bgr = (130,151,237)
     fnt_size = 0.6
     fnt_org = (20,20)
-    img = cv2.imread("./cam/df3_logo.jpg")
+    img = cv2.imread("./logo/df3_logo.jpg")
     cv2.putText(img, "Now, Loading...", fnt_org, cv2.FONT_HERSHEY_DUPLEX, fnt_size, bgr)
     cv2.imshow(window_name, img)
     cv2.waitKey(1)
@@ -109,7 +109,6 @@ def main():
                 print("Saved %s" % fn, flush=True)
                 # 画面表示
                 img = cv2.imread(fn)
-                cv2.putText(img, fn, fnt_org, cv2.FONT_HERSHEY_DUPLEX, fnt_size, bgr)
                 cv2.imshow(window_name, img)
                 cv2.waitKey(1)
                 stat = 0
