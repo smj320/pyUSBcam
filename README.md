@@ -7,6 +7,10 @@
 ffmpeg -list_devices true -f avfoundation  -i dummy
 ffmpeg -f avfoundation  -i "0"
 
+1920x1080だとスペック上は5fpsだが実際の取得・保存には1秒程度かかっている。
+1260x720だと10fpsとなり、転送・書き込みの実時間も0.1秒程度で終わる。
+ということで、1260x720@10fpsのパラメータで5fpsとする。
+
 ```bash
 % git clone git@github.com:smj320/pyUSBcam.git
 % pyenv local 3.11.2
