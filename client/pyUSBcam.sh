@@ -1,14 +1,15 @@
-FN_L=/home/admin/proj/pyUSBcam/img_l/$DD.jpg
-FN_S=/home/admin/proj/pyUSBcam/img_s/current.jpg
-count=0
-while true
-do
-  DD=`date '+%Y-%m-%d_%H:%M:%S'`
-  /usr/bin/fswebcam 640x480 --jpeg 50 $FN_S
-  /usr/bin/python /home/admin/proj/pyUSBcam/encode.py
-  count=`echo "$count+1" | bc`
-   if [ $count = 5 ]; then
-      /usr/bin/fswebcam 640x480 $FN_S
-      count=0
-  fi
-done
+#!/bin/zsh
+# PROJECT_ROOT=/home/admin/pyUSBcam
+PROJECT_ROOT=/Users/kikuchi/Projects/PycharmProjects/pyUSBcam
+LOG=$PROJECT_ROOT/log
+TS=$(date "+%Y%m%d%H%M%S")
+# shellcheck disable=SC2164
+echo $PROJECT_ROOT/client
+# shellcheck disable=SC2164
+cd $PROJECT_ROOT/client
+find img -name '*.jpg' -delete
+find sent -name '*.jpg' -delete
+. ../.venv/bin/activate
+python3 capture.py > $LOG/$TS-capture.log &
+# sleep 5
+python3 encoder.py

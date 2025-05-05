@@ -51,13 +51,14 @@ while True:
     size_arr = len(jpeg).to_bytes(4, byteorder='big')
     for fs in fsw_arr:
         writeSer.write(fs.to_bytes(1))
-        print(format(fs,"X"), flush=True)
+        print(format(fs,"X"), flush=True ,end="")
     # サイズ出力
     for s in size_arr:
         writeSer.write(s.to_bytes(1))
-        print(format(s,"X"), flush=True)
+        print(format(s,"X"), flush=True ,end="")
     # 実体出力
     cnt = 0
+    print("")
     b_arr = bytearray(jpeg)
     for b in b_arr:
         writeSer.write(b.to_bytes(1))
