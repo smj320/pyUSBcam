@@ -1,8 +1,11 @@
-[PORT]
-# TX=/dev/cu.usbserial-A5017AXP
-TX=/dev/serial0
-RX=/dev/cu.usbserial-AI055V7I
+[COMMON]
 BPS=38400
 
-[WINDOW]
+[CLIENT]
+PROJECT_ROOT=/Users/kikuchi/Projects/PycharmProjects/pyUSBcam
+SERIAL_TX=/dev/serial0
+#SERIAL_TX=/dev/cu.usbserial-AI055V7I
+
+[GSE]
 NAME=Dome Fuji III Camera System
+SERIAL_RX=/dev/cu.usbserial-AI055V7I
