@@ -10,4 +10,7 @@ client/sent/**/
 gse/sent/**/
 !gse/sent/.gitkeep
 
+log/**/
+!log/.gitkeep
+
 config.ini
