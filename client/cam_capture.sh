@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECT_ROOT=/home/admin/pyUSBcap
+PROJECT_ROOT=/home/admin/pyUSBcam
 TS=$(date "+%Y%m%d%H%M%S")
 LOG=${PROJECT_ROOT}/log/${TS}-capture.log
 # shellcheck disable=SC2164
