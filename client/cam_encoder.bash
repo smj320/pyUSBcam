@@ -1,4 +1,12 @@
 #!/bin/bash
+# shellcheck disable=SC1073
+# Captureが立ち上がるのを待つ
+if [ "$1" == "-v" ]; then
+  echo "Verbose mode"
+else
+  sleep 60
+fi
+
 PROJECT_ROOT=/home/admin/pyUSBcam
 TS=$(date "+%Y%m%d%H%M%S")
 LOG=${PROJECT_ROOT}/log/${TS}-encoder.log
