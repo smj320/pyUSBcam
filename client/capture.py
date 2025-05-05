@@ -37,7 +37,7 @@ def main():
 
     idx = 0
     signal.signal(signal.SIGALRM, task)
-    signal.setitimer(signal.ITIMER_REAL, 1, 0.2)
+    signal.setitimer(signal.ITIMER_REAL, 1, 0.25)
 
     while True:
         time.sleep(1000)
