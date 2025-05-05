@@ -56,7 +56,7 @@ method=manual
 % cp config.ini.dist config.ini
 % pip install configurator
 % sudo apt-get install libopencv-dev python3-opencv #pipだと失敗する
-% sh cam_encode.sh で様子を見る。出力されていたら
+% sh cam_encoder.sh で様子を見る。出力されていたら
 % sh cam_capture.sh で起動して,tail -f ./log/pyUSBcam.log で起動を確認
 ```
 
