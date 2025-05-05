@@ -8,6 +8,8 @@ import signal
 import time
 import cv2
 
+cap = None
+idx = 0
 
 def task(arg1, args2):
     global cap
@@ -40,7 +42,7 @@ def main():
     signal.setitimer(signal.ITIMER_REAL, 1, 0.25)
 
     while True:
-        time.sleep(1000)
+        time.sleep(50)
 
 
 if __name__ == "__main__":
