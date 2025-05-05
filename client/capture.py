@@ -8,22 +8,6 @@ import signal
 import time
 import cv2
 
-cap = None
-idx = 0
-
-def task(arg1, args2):
-    global cap
-    global idx
-    start = time.time()
-    ret, frame = cap.read()
-    cv2.imwrite("./img_s/img_%06d.jpg" % idx, frame)
-    end = time.time()
-    print("Time %0.3f" % (end - start))
-    idx += 1
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        exit(0)
-
-
 def main():
     global cap
     global idx
@@ -38,12 +22,13 @@ def main():
     print(fps, ww, hh)
 
     idx = 0
-    signal.signal(signal.SIGALRM, task)
-    signal.setitimer(signal.ITIMER_REAL, 1, 0.25)
-
     while True:
-        time.sleep(50)
-
+        start = time.time() #
+        ret, frame = cap.read()
+        cv2.imwrite("./img_s/img_%06d.jpg" % idx, frame)
+        end = time.time() #
+        print("Time %0.3f" % (end - start))
+        idx += 1
 
 if __name__ == "__main__":
     main()
