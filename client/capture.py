@@ -4,22 +4,9 @@ pip pySerial
 pip install opencv-python
 pip install matplotlib
 """
-import signal
+import datetime
 import time
 import cv2
-
-
-def task(arg1, args2):
-    global cap
-    global idx
-    start = time.time()
-    ret, frame = cap.read()
-    cv2.imwrite("./img/img_%06d.jpg" % idx, frame)
-    end = time.time()
-    print("Time %0.3f" % (end - start))
-    idx += 1
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        exit(0)
 
 
 def main():
@@ -36,11 +23,18 @@ def main():
     print(fps, ww, hh)
 
     idx = 0
-    signal.signal(signal.SIGALRM, task)
-    signal.setitimer(signal.ITIMER_REAL, 1, 0.25)
-
     while True:
-        time.sleep(50)
+        start = time.time()
+        now = datetime.datetime.now()
+        timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
+        ret, frame = cap.read()
+        cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.imwrite("./img/img_%06d.jpg" % idx, frame)
+        end = time.time()
+        print("Time %0.3f" % (end - start))
+        idx += 1
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            exit(0)
 
 
 if __name__ == "__main__":
