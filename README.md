@@ -41,6 +41,10 @@ method=manual
 * sudo apt-get install lsusb
 * sudo apt-get install fswebcam
 
+## カメラパラメータの確認
+4l2-ctl --list-formats-ext
+でできるが、opnecvからは全てのパラメータは設定できない。
+
 ### pyUSBのインストール
 * sudo apt-get update
 * sudo apt-get install git
@@ -51,8 +55,8 @@ method=manual
 * pyUSBcamに移動
 * /etc/fstabに下記を追加してリブート
 * tmpfs /home/admin/proj/pyUSBcam/img_s tmpfs defaults,size=4m,mode=0777 0 0
-* 
-```bash
+*
+```
 % cp config.ini.dist config.ini
 % pip install configurator
 % sudo apt-get install libopencv-dev python3-opencv #pipだと失敗する
@@ -61,19 +65,7 @@ method=manual
 ```
 
 ### 自動起動
-サービス登録用クリプト
-webcam.service
-これを下記のように登録して実行、テストする。
-```bash
-$ sudo cp webcam.service /etc/systemd/system/
-$ sudo systemctl daemon-reload
-$ sudo systemctl enable pyUSBcam
-テストは
-$ sudo systemctl start/stop pyUSBcam　で./log/pyUSBcam.logを確認
-```
 
-/etc/systemd/system/webcam.serviceを変更したときにはreloadする。
+cronでやる。
+crontab crontab.txt
 
-## カメラパラメータの確認
-4l2-ctl --list-formats-ext
-でできるが、実際にはこのパラメータに設定できない。
