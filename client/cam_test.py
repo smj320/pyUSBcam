@@ -21,11 +21,10 @@ def main():
     print("Default")
     print(fps, ww, hh)
 
-    fps = cap.set(cv2.CAP_PROP_FPS, 5)
-    ww = cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-    hh = cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+    ww = cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    hh = cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     print("Sset")
-    print(fps, ww, hh)
+    print(ww, hh)
 
     fps = cap.get(cv2.CAP_PROP_FPS)
     ww = cap.get(cv2.CAP_PROP_FRAME_WIDTH)

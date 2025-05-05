@@ -2,6 +2,11 @@
 
 ## PCの設定
 
+### カメラの調査
+
+ffmpeg -list_devices true -f avfoundation  -i dummy
+ffmpeg -f avfoundation  -i "0"
+
 ```bash
 % git clone git@github.com:smj320/pyUSBcam.git
 % pyenv local 3.11.2
