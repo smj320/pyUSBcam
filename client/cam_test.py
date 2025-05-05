@@ -32,5 +32,16 @@ def main():
     print("Result")
     print(fps, ww, hh)
 
+    ww = cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    hh = cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+    print("Sset")
+    print(ww, hh)
+
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    ww = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+    hh = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    print("Result")
+    print(fps, ww, hh)
+
 if __name__ == "__main__":
     main()
