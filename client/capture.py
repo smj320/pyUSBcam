@@ -9,6 +9,15 @@ import time
 import cv2
 
 
+def s_time_stamp(start_f):
+    now_i = int(start_f)
+    now_f = start_f - now_i
+    ms = int(now_f * 1000)
+    now = datetime.datetime.fromtimestamp(start_f, datetime.timezone.utc)
+    ts = "%04d-%02d-%02d %02d:%02d:%02d.%03d" % (now.year, now.month, now.day, now.hour, now.minute, now.second, ms)
+    return str(ts)
+
+
 def main():
     global cap
     global idx
@@ -25,10 +34,9 @@ def main():
     idx = 0
     while True:
         start = time.time()
-        now = datetime.datetime.now()
-        timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
         ret, frame = cap.read()
-        cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        ts = s_time_stamp(start)
+        cv2.putText(frame, ts, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         cv2.imwrite("./img/img_%06d.jpg" % idx, frame, [cv2.IMWRITE_JPEG_QUALITY, 90])
         end = time.time()
         print("Time %0.3f" % (end - start))
