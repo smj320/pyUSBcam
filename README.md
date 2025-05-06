@@ -69,3 +69,28 @@ method=manual
 cronでやる。
 crontab crontab.txt
 
+### I2C-UARTブリッジ　sc16is7xx
+
+調べてみたところ、カーネル4.2以降のraspberryには、デフォルトのI2Cアドレス0x48（I2Cチャネル1）で
+「sc16is7xx」カーネルモジュールが含まれているようです。このカーネルモジュールは、I/Oを開始するために
+IRQピンをHighに設定する必要があるようです。
+max310x.cが先っぽい。
+
+モジュールロード
+sudo modprobe sc16is7xx
+
+デバイス確認
+sudo stty -f /dev/ttyS0
+
+例として、ターミナルからデータを送信する
+echo "Hello, SC16IS7XX!" > /dev/ttyS0
+
+アンロード
+sudo rmmod sc16is7xx
+
+### 画像置き場の作成
+
+sdカードのFAT32領域を拡張しておく。
+mac windowsだとext4の中身が読めないのでリサイズできないっぽい。
+Linuxのgpartedを使う。
+
