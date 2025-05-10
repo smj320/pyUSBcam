@@ -28,9 +28,6 @@ def encode(q):
     # ---------------------
     while True:
         file_input = q.get()
-        if file_input == "#DONE":
-            return
-
         file_sent = file_input.replace('/img/', '/sent/')
         dir = os.path.dirname(file_sent)
         os.makedirs(dir, exist_ok=True)
@@ -81,7 +78,7 @@ def file_names(idx):
 
 def dir_names(project_root):
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    dir = project_root + "/client/img/%04d-%02d-%02d_%02d:%02d:%02d" % \
+    dir = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
           (now.year, now.month, now.day, now.hour, now.minute, now.second)
     return str(dir)
 
@@ -126,34 +123,29 @@ def main():
 
     idx = 0
     while True:
-        try:
-            # 時間計測開始
-            start = time.time()
+        # 時間計測開始
+        start = time.time()
 
-            # ファイル名とキャプチャ
-            file_name, ts = file_names(idx)
-            ret, frame = cap.read()
-            file_path = dir + file_name
+        # ファイル名とキャプチャ
+        file_name, ts = file_names(idx)
+        ret, frame = cap.read()
+        file_path = dir + file_name
 
-            # キャプチャ画像にタイムスタンプをつけて保存
-            cv2.putText(frame, ts, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.imwrite(file_path, frame, [cv2.IMWRITE_JPEG_QUALITY, 90])
+        # キャプチャ画像にタイムスタンプをつけて保存
+        cv2.putText(frame, ts, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.imwrite(file_path, frame, [cv2.IMWRITE_JPEG_QUALITY, 90])
 
-            # 5秒おきに1枚転送する
-            if idx % 50 == 0:
-                q.put(file_path)
+        # 5秒おきに1枚転送する
+        if idx % 50 == 0:
+            q.put(file_path)
 
-            # 経過時間計測終了
-            end = time.time()
-            print("Time %0.3f" % (end - start))
+        # 経過時間計測終了
+        end = time.time()
+        print("Time %0.3f" % (end - start))
 
-            # カウントアップ
-            idx += 1
-        except KeyboardInterrupt:
-            print("Terminate")
-            q.put("#DONE")
-            t.join()
-            exit(0)
+        # カウントアップ
+        idx += 1
+
 
 if __name__ == "__main__":
     main()
