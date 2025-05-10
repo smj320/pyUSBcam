@@ -136,3 +136,15 @@ screen /dev/cu.usbserial-A906UWWB 115200
 sudo systemctl disable NetworkManager
 sudo systemctl enable NetworkManager
 
+ps aux の出力 pidは2, 
+1 admin
+2 769
+3 0.0
+4 0.4
+5 6092
+6 2000
+7 pts/0
+8 S+
+9 10:04
+10 0:00
+11 grep --color=auto capture

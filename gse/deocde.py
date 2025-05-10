@@ -28,8 +28,8 @@ def main():
     # 設定ファイル読み込みとポートのオープン
     config = configparser.ConfigParser()
     config.read("../config.ini")
-    PORT_RX = config["GSE"]["SERIAL_RX"]
-    BPS = int(config["COMMON"]["BPS"])
+    dev = config["GSE"]["SERIAL_RX"]
+    bps = int(config["COMMON"]["BPS"])
 
     # ロゴ画面
     window_name = config["GSE"]["NAME"]
@@ -42,7 +42,17 @@ def main():
     cv2.waitKey(1)
 
     # シリアルの準備
-    readSer = serial.Serial(PORT_RX, BPS)
+    readSer = serial.Serial(
+        port=dev,
+        baudrate=bps,
+        bytesize=serial.EIGHTBITS,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        timeout=3,
+        xonxoff=False,
+        rtscts=False,
+        dsrdtr=False
+    )
     readSer.reset_input_buffer()
 
     # ログファイル
