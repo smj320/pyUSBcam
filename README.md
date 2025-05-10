@@ -71,26 +71,68 @@ crontab crontab.txt
 
 ### I2C-UARTブリッジ　sc16is7xx
 
-調べてみたところ、カーネル4.2以降のraspberryには、デフォルトのI2Cアドレス0x48（I2Cチャネル1）で
-「sc16is7xx」カーネルモジュールが含まれているようです。このカーネルモジュールは、I/Oを開始するために
-IRQピンをHighに設定する必要があるようです。
-max310x.cが先っぽい。
+I2Cの通信可能性とアドレスを確認
+$ sudo apt update
+$ sudo apt install i2c-tools
 
-モジュールロード
-sudo modprobe sc16is7xx
+```
+$ sudo i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- 4d -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --  
+```
 
-デバイス確認
-sudo stty -f /dev/ttyS0
+ところが、システム的には、デバイスツリーファイル
+/boot/firmware/overlays/sc16is750-i2c.dtbo
+の中でアドレスが0x48で待機しているようで、これは
+```aiignore
+/sys/bus/i2c/devices/1-0048
+```
+でみてとれる。.dtboファイルは一般的にはソースファイルを
+コンパイルしなさないとパラメータは変更できないが、
+パラメータとしてとれる場合がある。
+```
+$ sudo dtoverlay -h sc16is750-i2c
 
-例として、ターミナルからデータを送信する
-echo "Hello, SC16IS7XX!" > /dev/ttyS0
+Name:   sc16is750-i2c
 
-アンロード
-sudo rmmod sc16is7xx
+Info:   Overlay for the NXP SC16IS750 UART with I2C Interface
+        Enables the chip on I2C1 at 0x48 (or the "addr" parameter value). To
+        select another address, please refer to table 10 in reference manual.
 
-### 画像置き場の作成
+Usage:  dtoverlay=sc16is750-i2c,<param>=<val>
 
-sdカードのFAT32領域を拡張しておく。
-mac windowsだとext4の中身が読めないのでリサイズできないっぽい。
-Linuxのgpartedを使う。
+Params: int_pin                 GPIO used for IRQ (default 24)
+        addr                    Address (default 0x48)
+        i2c-bus                 Supports all the standard I2C bus selection
+                                parameters - see "dtoverlay -h i2c-bus"
+        xtal                    On-board crystal frequency (default 14745600)
+```
+これによると、アドレスと割込ピン、バスマスタ、xtal周波数が変数としてとれる。
+この変数は/boot/firmware/config.txtに記述することで変更できる。
+```
+# SC16IS7xx I2C
+dtoverlay=sc16is750-i2c,addr=0x4d,int_pin=4,xtal=7372800
+```
+
+設定後再起動すると、
+/dev/ttySC0
+が使えるようになる。
+
+
+### RTC
+DS3231
+
+### 有線接続方法
+screen /dev/cu.usbserial-A906UWWB 115200
+
+### wifiの無効化/有効化
+sudo systemctl disable NetworkManager
+sudo systemctl enable NetworkManager
 
