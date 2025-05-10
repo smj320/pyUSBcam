@@ -1,1 +1,1 @@
-@reboot /usr/bin/bash /home/admin/pyUSBcam/client/cam_capture.bash
+@reboot /usr/bin/bash /home/admin/pyUSBcam/client/capture.bash

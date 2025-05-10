@@ -68,19 +68,22 @@ def encode(q):
 
 
 # ディレクトリ名, ファイル名、タイムスタンプ
-def file_names(idx):
+def avi_names(project_root):
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    ms = int(now.microsecond / 1000.0)
-    file_save = "/img_%08d.jpg" % idx
-    ts = "%04d-%02d-%02d %02d:%02d:%02d.%03d" % (now.year, now.month, now.day, now.hour, now.minute, now.second, ms)
-    return str(file_save), str(ts)
+    avi_path = project_root + "/client/avi/%04d%02d%02d_%02d%02d%02d.avi" % \
+        (now.year, now.month, now.day, now.hour, now.minute, now.second)
+    return str(avi_path)
 
-
-def dir_names(project_root):
+def time_stamp():
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    dir = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
+    ts = "%04d-%02d-%02d %02d:%02d:%02d" % (now.year, now.month, now.day, now.hour, now.minute, now.second)
+    return str(ts)
+
+def jpg_names(project_root, idx):
+    now = datetime.now(ZoneInfo("Asia/Tokyo"))
+    img_path = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
           (now.year, now.month, now.day, now.hour, now.minute, now.second)
-    return str(dir)
+    return str(img_path + "_%04d.jpg" % idx)
 
 
 def main():
@@ -117,34 +120,31 @@ def main():
     t.start()
 
     # 重複なしのフォルダを作る
-    dir = dir_names(project_root)
-    os.makedirs(dir, exist_ok=True)
-    print("Save to %s" % dir, flush=True)
-
-    idx = 0
+    fourcc = cv2.VideoWriter.fourcc(*'MJPG')  # Motion JPEG コーデック
+    out = cv2.VideoWriter('./avi/output.avi', fourcc, 30.0, (1280, 720))
+    frame_count = 0
     while True:
         # 時間計測開始
         start = time.time()
 
-        # ファイル名とキャプチャ
-        file_name, ts = file_names(idx)
+        # キャプチャしてタイムスタンプを打って保存
         ret, frame = cap.read()
-        file_path = dir + file_name
-
-        # キャプチャ画像にタイムスタンプをつけて保存
+        ts = time_stamp()
         cv2.putText(frame, ts, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.imwrite(file_path, frame, [cv2.IMWRITE_JPEG_QUALITY, 90])
+        out.write(frame)
+        frame_count += 1
 
         # 5秒おきに1枚転送する
-        if idx % 50 == 0:
-            q.put(file_path)
+        if frame_count % 100 == 0:
+            out.release()
+            out = cv2.VideoWriter('./avi/output.avi', fourcc, 30.0, (1280, 720))
 
         # 経過時間計測終了
         end = time.time()
         print("Time %0.3f" % (end - start))
 
         # カウントアップ
-        idx += 1
+
 
 
 if __name__ == "__main__":
