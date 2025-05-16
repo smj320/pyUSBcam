@@ -28,10 +28,8 @@ def encode(q):
     # ---------------------
     while True:
         img_path = q.get()
-        sent_path = img_path.replace('/img/', '/sent')
-        dir = os.path.dirname(file_sent)
-        os.makedirs(dir, exist_ok=True)
-        print("Save to  %s" %  sent_path , flush=True)
+        sent_path = img_path.replace('/img/', '/sent/')
+        print("Save to  %s" % sent_path, flush=True)
 
         # ---------------------
         # リサイズして保存　1280x720 /3 -> 640x360
@@ -79,17 +77,15 @@ def get_img_dir(project_root):
     img_dir = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
               (now.year, now.month, now.day, now.hour, now.minute, now.second)
     os.makedirs(img_dir, exist_ok=True)
+    sent_dir = project_root + "/client/sent/%04d%02d%02d_%02d%02d%02d" % \
+              (now.year, now.month, now.day, now.hour, now.minute, now.second)
+    os.makedirs(sent_dir, exist_ok=True)
     return str(img_dir)
 
 
 def get_img_path(img_dir, idx):
     img_path = img_dir + "/%06d.jpg" % idx
     return str(img_path)
-
-
-def get_sent_path(img_path):
-    sent_path = img_path.replace('/img/', '/sent')
-    return str(sent_path)
 
 
 def main():
@@ -140,7 +136,7 @@ def main():
         frame_count += 1
 
         # 5秒おきに1枚転送する
-        if frame_count % 100 == 0:
+        if frame_count % 50 == 0:
             q.put(img_path)
 
         # 経過時間計測終了
