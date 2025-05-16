@@ -3,7 +3,7 @@
 ## Raspy側の設定
 
 ### serial consoleの有効化
-
+インストールイメージは64bit Lightを選択。
 bootfsのconfig.txtで
 ```
 [all]

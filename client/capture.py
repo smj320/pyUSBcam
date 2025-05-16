@@ -27,23 +27,23 @@ def encode(q):
     # ファイル名を受信,保存ファイル名を生成
     # ---------------------
     while True:
-        file_input = q.get()
-        file_sent = file_input.replace('/img/', '/sent/')
+        img_path = q.get()
+        sent_path = img_path.replace('/img/', '/sent')
         dir = os.path.dirname(file_sent)
         os.makedirs(dir, exist_ok=True)
-        print("Save to  %s" % file_sent, flush=True)
+        print("Save to  %s" %  sent_path , flush=True)
 
         # ---------------------
         # リサイズして保存　1280x720 /3 -> 640x360
         # ---------------------
-        img = cv2.imread(file_input)
+        img = cv2.imread(img_path)
         cv2.resize(img, (640, 360))
-        cv2.imwrite(file_sent, img, [cv2.IMWRITE_JPEG_QUALITY, 20])
+        cv2.imwrite(sent_path, img, [cv2.IMWRITE_JPEG_QUALITY, 20])
 
         # ---------------------
         # 再読込して送信
         # ---------------------
-        with open(file_sent, 'rb') as f:
+        with open(sent_path, 'rb') as f:
             jpeg = f.read()
 
         # ヘッダ出力
@@ -68,22 +68,28 @@ def encode(q):
 
 
 # ディレクトリ名, ファイル名、タイムスタンプ
-def avi_names(project_root):
-    now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    avi_path = project_root + "/client/avi/%04d%02d%02d_%02d%02d%02d.avi" % \
-        (now.year, now.month, now.day, now.hour, now.minute, now.second)
-    return str(avi_path)
-
 def time_stamp():
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
     ts = "%04d-%02d-%02d %02d:%02d:%02d" % (now.year, now.month, now.day, now.hour, now.minute, now.second)
     return str(ts)
 
-def jpg_names(project_root, idx):
+
+def get_img_dir(project_root):
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    img_path = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
-          (now.year, now.month, now.day, now.hour, now.minute, now.second)
-    return str(img_path + "_%04d.jpg" % idx)
+    img_dir = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
+              (now.year, now.month, now.day, now.hour, now.minute, now.second)
+    os.makedirs(img_dir, exist_ok=True)
+    return str(img_dir)
+
+
+def get_img_path(img_dir, idx):
+    img_path = img_dir + "/%06d.jpg" % idx
+    return str(img_path)
+
+
+def get_sent_path(img_path):
+    sent_path = img_path.replace('/img/', '/sent')
+    return str(sent_path)
 
 
 def main():
@@ -120,31 +126,28 @@ def main():
     t.start()
 
     # 重複なしのフォルダを作る
-    fourcc = cv2.VideoWriter.fourcc(*'MJPG')  # Motion JPEG コーデック
-    out = cv2.VideoWriter('./avi/output.avi', fourcc, 30.0, (1280, 720))
+    img_dir = get_img_dir(project_root)
     frame_count = 0
     while True:
         # 時間計測開始
         start = time.time()
-
         # キャプチャしてタイムスタンプを打って保存
         ret, frame = cap.read()
         ts = time_stamp()
         cv2.putText(frame, ts, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        out.write(frame)
+        img_path = get_img_path(img_dir, frame_count)
+        cv2.imwrite(img_path, frame)
         frame_count += 1
 
         # 5秒おきに1枚転送する
         if frame_count % 100 == 0:
-            out.release()
-            out = cv2.VideoWriter('./avi/output.avi', fourcc, 30.0, (1280, 720))
+            q.put(img_path)
 
         # 経過時間計測終了
         end = time.time()
         print("Time %0.3f" % (end - start))
 
         # カウントアップ
-
 
 
 if __name__ == "__main__":
