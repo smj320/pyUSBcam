@@ -137,13 +137,13 @@ def main():
         cv2.imwrite(img_path, frame)
         frame_count += 1
 
-        # 5秒おきに1枚転送する
-        if frame_count % 50 == 0:
+        # 10秒おきに1枚転送する
+        if frame_count % 100 == 0:
             q.put(img_path)
 
         # 経過時間計測終了
         end = time.time()
-        print("Time %0.3f" % (end - start))
+        # print("Time %0.3f" % (end - start))
 
 
 if __name__ == "__main__":
