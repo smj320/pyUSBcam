@@ -59,7 +59,7 @@ def main():
             cc = readSer.read(1)
             b_stack.extend(cc)
             # 待機マーカー
-            print("%02X"%cc[0], end='', flush=True)
+            print("%02X"%cc[0], flush=True, end='')
             #
             f_log.write(cc)
             f_log.flush()
@@ -68,7 +68,7 @@ def main():
             # 一致したのでスタック破棄してステート進行
             if b_stack == fsw_arr:
                 b_stack.clear()
-                print("Found FSW", flush=True)
+                print(" Found FSW", flush=True)
                 # stat = 1
                 stat = 0
                 continue
@@ -85,9 +85,9 @@ def main():
             if len(b_stack) <= 3:
                 stat = 1
                 continue
-            # バッファ長が育ったので解読,1M越えたらやりなおし
+            # バッファが育ったので解読,1M越えたらやりなおし
             data_size = int.from_bytes(bytes(b_stack), byteorder='big')
-            print("\nData size %02d Byte" % data_size, flush=True)
+            print("Data size %02d Byte" % data_size, flush=True)
             if data_size > 1024 * 1024 * 1024:
                 b_stack.clear()
                 stat = 0

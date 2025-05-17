@@ -58,13 +58,13 @@ def encode(q):
             print(format(s, "X"), flush=True, end="")
         # 実体出力
         cnt = 0
-        # b_arr = bytearray(jpeg)
-        # for b in b_arr:
-        #     writeSer.write(b.to_bytes(1))
-        #     # if cnt % 10000 == 0:
-        #     #    print("%7d:%02X" % (cnt, b), flush=True)
-        #     cnt += 1
-        print("SENT %06d/%06d"%(cnt,img_size), flush=True)
+        b_arr = bytearray(jpeg)
+        for b in b_arr:
+            writeSer.write(b.to_bytes(1))
+            if cnt % 10000 == 0:
+                print("%7d:%02X" % (cnt, b), flush=True)
+            cnt += 1
+        print("SENT %06d/%06d" % (cnt, img_size), flush=True)
 
 
 # ディレクトリ名, ファイル名、タイムスタンプ
@@ -80,7 +80,7 @@ def get_img_dir(project_root):
               (now.year, now.month, now.day, now.hour, now.minute, now.second)
     os.makedirs(img_dir, exist_ok=True)
     sent_dir = project_root + "/client/sent/%04d%02d%02d_%02d%02d%02d" % \
-              (now.year, now.month, now.day, now.hour, now.minute, now.second)
+               (now.year, now.month, now.day, now.hour, now.minute, now.second)
     os.makedirs(sent_dir, exist_ok=True)
     return str(img_dir)
 
@@ -143,9 +143,7 @@ def main():
 
         # 経過時間計測終了
         end = time.time()
-        # print("Time %0.3f" % (end - start))
-
-        # カウントアップ
+        print("Time %0.3f" % (end - start))
 
 
 if __name__ == "__main__":
