@@ -68,7 +68,7 @@ Params: int_pin                 GPIO used for IRQ (default 24)
 この変数は/boot/firmware/config.txtに記述することで変更できる。
 ```
 # SC16IS7xx I2C
-dtoverlay=sc16is750-i2c,addr=0x4d,int_pin=4,xtal=7372800
+dtoverlay=sc16is750-i2c,addr=0x4d,int_pin=4,xtal=14715000
 ```
 
 設定後再起動すると、
