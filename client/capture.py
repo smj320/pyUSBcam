@@ -45,7 +45,7 @@ def encode(q):
             jpeg = f.read()
         # サイズ計測
         img_size = len(jpeg)
-        print("Size %d" % img_size, flush=True)
+        print("Size %d" % img_size, flush=True, end="")
         size_arr = len(jpeg).to_bytes(4, byteorder='big')
 
         # ヘッダ出力
@@ -57,7 +57,7 @@ def encode(q):
             writeSer.write(s.to_bytes(1))
             print(format(s, "X"), flush=True, end="")
         # 実体出力
-        # cnt = 0
+        cnt = 0
         # b_arr = bytearray(jpeg)
         # for b in b_arr:
         #     writeSer.write(b.to_bytes(1))
