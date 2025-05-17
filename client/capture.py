@@ -143,7 +143,7 @@ def main():
 
         # 経過時間計測終了
         end = time.time()
-        print("Time %0.3f" % (end - start))
+        # print("Time %0.3f" % (end - start))
 
         # カウントアップ
 
