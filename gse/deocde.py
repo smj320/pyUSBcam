@@ -69,8 +69,7 @@ def main():
             if b_stack == fsw_arr:
                 b_stack.clear()
                 print(" Found FSW", flush=True)
-                # stat = 1
-                stat = 0
+                stat = 1
                 continue
             # 一致しないので先頭を削除してやりなおし
             b_stack.pop(0)
