@@ -42,17 +42,7 @@ def main():
     cv2.waitKey(1)
 
     # シリアルの準備
-    readSer = serial.Serial(
-        port=dev,
-        baudrate=bps,
-        bytesize=serial.EIGHTBITS,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        timeout=3,
-        xonxoff=False,
-        rtscts=False,
-        dsrdtr=False
-    )
+    readSer = serial.Serial(dev, bps, timeout=20)
     readSer.reset_input_buffer()
 
     # ログファイル
@@ -78,7 +68,9 @@ def main():
             # 一致したのでスタック破棄してステート進行
             if b_stack == fsw_arr:
                 b_stack.clear()
-                stat = 1
+                print("Found FSW", flush=True)
+                # stat = 1
+                stat = 0
                 continue
             # 一致しないので先頭を削除してやりなおし
             b_stack.pop(0)

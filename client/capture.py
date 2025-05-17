@@ -57,13 +57,13 @@ def encode(q):
             writeSer.write(s.to_bytes(1))
             print(format(s, "X"), flush=True, end="")
         # 実体出力
-        cnt = 0
-        b_arr = bytearray(jpeg)
-        for b in b_arr:
-            writeSer.write(b.to_bytes(1))
-            # if cnt % 10000 == 0:
-            #    print("%7d:%02X" % (cnt, b), flush=True)
-            cnt += 1
+        # cnt = 0
+        # b_arr = bytearray(jpeg)
+        # for b in b_arr:
+        #     writeSer.write(b.to_bytes(1))
+        #     # if cnt % 10000 == 0:
+        #     #    print("%7d:%02X" % (cnt, b), flush=True)
+        #     cnt += 1
         print("SENT %06d/%06d"%(cnt,img_size), flush=True)
 
 
