@@ -61,10 +61,10 @@ def encode(q):
         b_arr = bytearray(jpeg)
         for b in b_arr:
             writeSer.write(b.to_bytes(1))
-            if cnt % 10000 == 0:
-                print("%7d:%02X" % (cnt, b), flush=True)
+            # if cnt % 10000 == 0:
+            #    print("%7d:%02X" % (cnt, b), flush=True)
             cnt += 1
-        print("%06d/%06d SENT"%(cnt,img_size), flush=True)
+        print("SENT %06d/%06d"%(cnt,img_size), flush=True)
 
 
 # ディレクトリ名, ファイル名、タイムスタンプ
