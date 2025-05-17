@@ -43,9 +43,12 @@ def encode(q):
         # ---------------------
         with open(sent_path, 'rb') as f:
             jpeg = f.read()
+        # サイズ計測
+        img_size = len(jpeg)
+        print("Size %d" % img_size, flush=True)
+        size_arr = len(jpeg).to_bytes(4, byteorder='big')
 
         # ヘッダ出力
-        size_arr = len(jpeg).to_bytes(4, byteorder='big')
         for fs in fsw_arr:
             writeSer.write(fs.to_bytes(1))
             print(format(fs, "X"), flush=True, end="")
@@ -55,14 +58,13 @@ def encode(q):
             print(format(s, "X"), flush=True, end="")
         # 実体出力
         cnt = 0
-        print("")
         b_arr = bytearray(jpeg)
         for b in b_arr:
             writeSer.write(b.to_bytes(1))
             if cnt % 10000 == 0:
                 print("%7d:%02X" % (cnt, b), flush=True)
             cnt += 1
-        print("END", flush=True)
+        print("%06d/%06d SENT"%(cnt,img_size), flush=True)
 
 
 # ディレクトリ名, ファイル名、タイムスタンプ
