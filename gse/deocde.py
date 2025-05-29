@@ -53,20 +53,18 @@ def main():
             # 1文字読んでログに記録,スタックに積む
             cc = readSer.read(1)
             b_stack.extend(cc)
-            # 待機マーカー
-            print("%02X" % cc[0], flush=True, end='')
-            #
-            if len(b_stack) <= 2:
+            if len(b_stack) < 2:
                 continue
+            print("%02d %02X%02X" % (len(b_stack),b_stack[0],b_stack[1]), flush=True)
             # 一致したのでスタック破棄してステート進行
-            if b_stack == (0xFF, 0xD8):
+            if b_stack[0] == 0xFF and b_stack[1] == 0xD8:
                 b_stack.clear()
                 print(" Found FFD8", flush=True)
                 # ファイルオープン
                 f_name = path_name()
                 fn = open(f_name, "wb")
                 # ヘッダをファイルに格納
-                fn.write(b_stack)
+                fn.write(0xFFD8.to_bytes(2, byteorder='big'))
                 # マーカークリア
                 b_stack.clear()
                 # ステート進行
@@ -85,7 +83,7 @@ def main():
             if len(b_stack) < 2:
                 continue
             # 2以上なら完了チェック
-            if b_stack == (0xFF, 0xD9):
+            if b_stack[0] == 0xFF and b_stack[1] == 0xD9:
                 # ファイルクローズ,マーカリセット
                 fn.close()
                 b_stack.clear()
