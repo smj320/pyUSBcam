@@ -1,1 +1,2 @@
 @reboot /usr/bin/bash /home/admin/pyUSBcam/client/capture.bash
+
