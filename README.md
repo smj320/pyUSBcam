@@ -120,3 +120,15 @@ github用の秘密鍵を.sshにインストールして、パーミッション�
 % pip install configurator
 % cp config.ini.dist config.ini
 ```
+
+
+## 動画作成
+
+もとになるコマンド
+```
+ffmpeg -r 10 -i %06d.jpg -vcodec mjpeg video_output.avi
+```
+
+sftpとか直接SDカードを操作して、client/imgをgse/imgにもってくる。
+
+gse/conv.pyを実行すると、gse/movフォルダにaviファイルができる。

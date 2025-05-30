@@ -2,11 +2,10 @@
 BPS=38400
 
 [CLIENT]
-PROJECT_ROOT=/home/admin/pyUSBcam
+PROJECT_ROOT=/Users/kikuchi/Projects/PycharmProjects/pyUSBcam
 SERIAL_TX=/dev/serial0
-#SERIAL_TX=/dev/cu.usbserial-AI055V7I
+# SERIAL_TX=/dev/cu.usbserial-A50176FG
 
 [GSE]
-PROJECT_ROOT=/Users/kikuchi/Projects/PycharmProjects/pyUSBcam
 NAME=Dome Fuji III Camera System
-SERIAL_RX=/dev/cu.usbserial-AI055V7I
+SERIAL_RX=/dev/cu.usbserial-A906UWWB

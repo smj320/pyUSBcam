@@ -10,6 +10,9 @@ client/sent/**/
 gse/sent/**/
 !gse/sent/.gitkeep
 
+gse/mov/**/
+!gse/mov/.gitkeep
+
 log/**/
 !log/.gitkeep
 
