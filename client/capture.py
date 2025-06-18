@@ -17,9 +17,7 @@ import cv2
 
 global writeSer  # serial writer
 
-
 # global fsw_arr  # frame sync word
-
 
 def encode(q):
     global writeSer
