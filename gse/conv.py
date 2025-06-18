@@ -1,8 +1,11 @@
 import glob
 import os
+import configparser
 
 # 設定ファイル読み込みとポートのオープン
-src_dirs = glob.glob("../client/img/*")
+config = configparser.ConfigParser()
+config.read("../config.ini")
+src_dirs = config["GSE"]["IMG_PATH"]
 
 # なければ終了
 if len(src_dirs) == 0:
