@@ -10,4 +10,5 @@ SERIAL_TX=/dev/serial0
 [GSE]
 NAME=Dome Fuji III Camera System
 SERIAL_RX=/dev/cu.usbserial-A906UWWB
-IMG_PATH="../client/img/*"
+# IMG_PATH=../client/img/*
+IMG_PATH=/Volumes/rootfs/home/admin/pyUSBcam/client/img/*

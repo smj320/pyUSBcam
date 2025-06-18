@@ -5,7 +5,8 @@ import configparser
 # 設定ファイル読み込みとポートのオープン
 config = configparser.ConfigParser()
 config.read("../config.ini")
-src_dirs = config["GSE"]["IMG_PATH"]
+img_path = config["GSE"]["IMG_PATH"]
+src_dirs = glob.glob(img_path)
 
 # なければ終了
 if len(src_dirs) == 0:
