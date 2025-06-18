@@ -132,3 +132,11 @@ ffmpeg -r 10 -i %06d.jpg -vcodec mjpeg video_output.avi
 sftpとか直接SDカードを操作して、client/imgをgse/imgにもってくる。
 
 gse/conv.pyを実行すると、gse/movフォルダにaviファイルができる。
+
+## ファイル作成手順とか
+
+```python
+dir = "./img/YYYYMMDDHHMMSS"
+#....
+img_path = dir + "/img_05d.png"
+```

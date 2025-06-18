@@ -12,16 +12,16 @@ import serial
 import configparser
 from datetime import datetime
 from zoneinfo import ZoneInfo
-import time
 import cv2
 
 global writeSer  # serial writer
-global fsw_arr  # frame sync word
+
+
+# global fsw_arr  # frame sync word
 
 
 def encode(q):
     global writeSer
-    global fsw_arr
 
     # ---------------------
     # ファイル名を受信,保存ファイル名を生成
@@ -58,7 +58,8 @@ def encode(q):
 # ディレクトリ名, ファイル名、タイムスタンプ
 def time_stamp():
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    ts = "%04d-%02d-%02d %02d:%02d:%02d" % (now.year, now.month, now.day, now.hour, now.minute, now.second)
+    ts = ("%04d-%02d-%02d %02d:%02d:%02d.%04d" %
+          (now.year, now.month, now.day, now.hour, now.minute, now.second, now.microsecond / 1000))
     return str(ts)
 
 
@@ -67,6 +68,7 @@ def get_img_dir(project_root):
     img_dir = project_root + "/client/img/%04d%02d%02d_%02d%02d%02d" % \
               (now.year, now.month, now.day, now.hour, now.minute, now.second)
     os.makedirs(img_dir, exist_ok=True)
+    # YYYYMMDD_HHMMSS
     sent_dir = project_root + "/client/sent/%04d%02d%02d_%02d%02d%02d" % \
                (now.year, now.month, now.day, now.hour, now.minute, now.second)
     os.makedirs(sent_dir, exist_ok=True)
@@ -86,15 +88,12 @@ def main():
     config = configparser.ConfigParser()
     config.read("../config.ini", encoding='utf-8')
     project_root = config['CLIENT']['PROJECT_ROOT']
+    n_img = int(config['COMMON']['N_IMG'])
 
     # 設定ファイル読み込みとポートのオープン
     dev = config['CLIENT']['SERIAL_TX']
     bps = int(config['COMMON']['BPS'])
     writeSer = serial.Serial(dev, bps, timeout=3)
-
-    # ヘッダを準備
-    fsw = 0xEB9038C7
-    fsw_arr = fsw.to_bytes(4, byteorder='big')
 
     # macで0はPhoneのカメラとかになるので,デスクトップカメラは1
     cap = cv2.VideoCapture(0)
@@ -115,13 +114,11 @@ def main():
     img_dir = get_img_dir(project_root)
     frame_count = 0
     while True:
-        # 時間計測開始
-        start = time.time()
         # キャプチャしてタイムスタンプを打って保存
         ret, frame = cap.read()
         ts = time_stamp()
         cv2.putText(frame, ts, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        img_path = get_img_path(img_dir, frame_count)
+        img_path = img_dir + "/img_%05d.jpg" % frame_count
         cv2.imwrite(img_path, frame)
         frame_count += 1
 
@@ -129,9 +126,10 @@ def main():
         if frame_count % 100 == 0:
             q.put(img_path)
 
-        # 経過時間計測終了
-        end = time.time()
-        # print("Time %0.3f" % (end - start))
+        # 36000フレームとごにディレクトリを切り替える
+        if frame_count == n_img:
+            img_dir = get_img_dir(project_root)
+            frame_count = 0
 
 
 if __name__ == "__main__":

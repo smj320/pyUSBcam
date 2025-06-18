@@ -1,8 +1,9 @@
 import glob
 import os
+import configparser
 
-# imvのディレクトリを列挙
-src_dirs = glob.glob("./img/20*")
+# 設定ファイル読み込みとポートのオープン
+src_dirs = glob.glob("../client/img/*")
 
 # なければ終了
 if len(src_dirs) == 0:
@@ -16,9 +17,9 @@ for src_dir in src_dirs:
         continue
     # src, dstを決めて変換
     dir = src_dir.split("/")[-1]
-    src = "./img/" + dir + "/%06d.jpg"
+    src = src_dir + "/img_%05d.jpg"
     dst = "./mov/" + dir + ".avi"
-    cmd = "ffmpeg -r 10 -i " + src + " -vcodec mjpeg " + dst
+    cmd = "ffmpeg -r 10 -i " + src + " -vcodec mjpeg -loglevel info " + dst
     print(cmd)
     os.system(cmd)
     pass
