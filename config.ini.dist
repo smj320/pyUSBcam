@@ -1,5 +1,6 @@
 [COMMON]
 BPS=38400
+N_IMG=36000
 
 [CLIENT]
 PROJECT_ROOT=/Users/kikuchi/Projects/PycharmProjects/pyUSBcam
