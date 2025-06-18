@@ -5,6 +5,7 @@ pip install opencv-python
 pip install matplotlib
 """
 import os
+import time
 from threading import Thread
 import queue
 
@@ -113,7 +114,11 @@ def main():
     # 重複なしのフォルダを作る
     img_dir = get_img_dir(project_root)
     frame_count = 0
+    # fps=10で動くおうに待機させたい
+    target_fps = 10
+    target_ms_per_frame = int(1000 / target_fps)
     while True:
+        start_time = time.time()
         # キャプチャしてタイムスタンプを打って保存
         ret, frame = cap.read()
         ts = time_stamp()
@@ -121,6 +126,13 @@ def main():
         img_path = img_dir + "/img_%05d.jpg" % frame_count
         cv2.imwrite(img_path, frame)
         frame_count += 1
+
+        #　待機時間計装
+        end_time = time.time()  # フレーム処理終了時間
+        elapsed_time_ms = (end_time - start_time) * 1000  # 処理にかかった時間 (ミリ秒)
+        wait_time_ms = max(1, target_ms_per_frame - int(elapsed_time_ms))
+        if cv2.waitKey(wait_time_ms) & 0xFF == ord('q'):
+            break
 
         # 10秒おきに1枚転送する
         if frame_count % 100 == 0:
