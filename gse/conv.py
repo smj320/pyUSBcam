@@ -1,6 +1,5 @@
 import glob
 import os
-import configparser
 
 # 設定ファイル読み込みとポートのオープン
 src_dirs = glob.glob("../client/img/*")
